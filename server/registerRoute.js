@@ -1,16 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const Register = require("./registerModel.js");
-
 const jwt = require("jsonwebtoken");
-const passport = require("passport");
-const LocalStrategy = require("passport-local");
-const JwtStrategy = require("passport-jwt").Strategy;
-const { ExtractJwt } = require("passport-jwt");
 
+const { protected } = require("./strategies.js");
 const secret = "that is what I shared yesterday lol";
 
-router.get("/", (req, res) => {
+router.get("/", protected, (req, res) => {
   Register.find({})
     .then(p => {
       res.status(200).json(p);
@@ -19,16 +15,6 @@ router.get("/", (req, res) => {
       res.status(500).json({ msg: "we are not able to connect you " });
     });
 });
-//-------- making token ------------
-
-// passport global middleware
-// passport.use(localStrategy);
-// passport.use(jwtStrategy);
-
-// passport local middleware
-// const passportOptions = { session: false };
-// const authenticate = passport.authenticate("local", passportOptions);
-// const protected = passport.authenticate("jwt", passportOptions);
 
 function makeToken(user) {
   const timestamp = new Date().getTime();
@@ -40,18 +26,19 @@ function makeToken(user) {
   const options = {
     expiresIn: "24h"
   };
-  const p = jwt.sign(payload, secret, options);
-  console.log(p);
+  const x = jwt.sign(payload, secret, options);
+  console.log("x", x);
 
-  return p;
+  return x;
 }
 
-/////-----------------------------------
 router.post("/", (req, res) => {
+  console.log("req", req.body.username);
   newRegister = new Register(req.body);
   newRegister
     .save()
     .then(p => {
+      console.log("p", p);
       const token = makeToken(p);
 
       res.status(200).json({ msg: " registered successfully ", p, token });

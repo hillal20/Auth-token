@@ -11,7 +11,7 @@ class UsersView extends Component {
   }
 
   fetchingUsers = () => {
-    const promise = axios.get("http://localhost:7000/api/registers");
+    const promise = axios.get("http://localhost:9000/api/registers");
     console.log("promise2", promise);
 
     promise
