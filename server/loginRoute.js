@@ -11,7 +11,11 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", authenticate, (req, res) => {
-  res.status(200).json({ user: req.user });
+  res.status(200).json({
+    token: makeToken(req.user),
+    user: req.user,
+    masg: "you logged-in  succefully"
+  });
 });
 
 module.exports = router;

@@ -11,7 +11,16 @@ class UsersView extends Component {
   }
 
   fetchingUsers = () => {
-    const promise = axios.get("http://localhost:9000/api/registers");
+    const token = localStorage.getItem("token");
+    const authToken = `Bearer ${token}`;
+    const requestOptions = {
+      headers: { Authorization: authToken }
+    };
+
+    const promise = axios.get(
+      "http://localhost:9000/api/registers",
+      requestOptions
+    );
     console.log("promise2", promise);
 
     promise
@@ -23,16 +32,15 @@ class UsersView extends Component {
   componentWillMount = () => {
     this.fetchingUsers();
   };
-
   render() {
     console.log("u", this.state.users);
 
     return (
       <div>
-        hello
-        {this.state.users.map(user => {
+        <button>Sign out</button>
+        {this.state.users.map((user, index) => {
           return (
-            <div>
+            <div key={index}>
               <ul>{user.username}</ul>
             </div>
           );

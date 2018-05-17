@@ -23,9 +23,12 @@ class Form extends Component {
     promise
       .then(response => {
         console.log("response1", response);
+        localStorage.setItem("token", response.data.token);
+        this.props.history.push("/users");
       })
       .catch(err => {
         console.log("error", err);
+        localStorage.removeItem("token");
       });
   };
 

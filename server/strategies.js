@@ -21,8 +21,7 @@ const localStrategy = new LocalStrategy(function(username, password, done) {
               const { _id, username } = user;
               return done(null, {
                 _id,
-                username,
-                masg: "you logged-in  succefully"
+                username
               }); // this ends in req.user
             } else {
               return done(null, false);
