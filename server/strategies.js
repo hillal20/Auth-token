@@ -6,11 +6,10 @@ const jwt = require("jsonwebtoken");
 const Register = require("./registerModel.js");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
-const secret = "that is what I shared yesterday lol";
+const { secret } = require("./tokenAndSecret.js");
 
 const localStrategy = new LocalStrategy(function(username, password, done) {
   Register.findOne({ username })
-
     .then(user => {
       if (!user) {
         done(null, false);
@@ -61,4 +60,4 @@ passport.use(localStrategy);
 passport.use(jwtStrategy);
 const authenticate = passport.authenticate("local", passportOptions);
 const protected = passport.authenticate("jwt", passportOptions);
-module.exports = { localStrategy, authenticate, protected };
+module.exports = { authenticate, protected };
